@@ -11,9 +11,10 @@ export async function connect(){
     await openDB('users', 1, {
         upgrade(db) {
             if (!db.objectStoreNames.contains('users-storage')) {
-                db.createObjectStore('users-storage', {
+                const store = db.createObjectStore('users-storage', {
                     keyPath: 'email',
                 })
+                console.log(store)
             }
             else {
                 console.log('Database already exists');
@@ -27,12 +28,16 @@ export async function connect(){
     await openDB('notes', 2, {
         upgrade(db) {
             if (!db.objectStoreNames.contains('notes-storage')) {
-                db.createObjectStore('notes-storage', {
+                const store = db.createObjectStore('notes-storage', {
                     keyPath: 'id',
                     autoIncrement: true,
                 })
+
+               
+                store.createIndex('title', 'title', {unique: false})
             }
             else {
+               
                 console.log('Database already exists');
             }
           
